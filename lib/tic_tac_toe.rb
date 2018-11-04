@@ -94,8 +94,7 @@ class TicTacToe
   end
 
   def play
-    until over?|| won?|| full?
-    puts 'turn'
+    until over?
       turn
     end
     if won?
