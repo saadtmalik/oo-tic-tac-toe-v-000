@@ -88,8 +88,8 @@ class TicTacToe
   end
 
   def winner
-    if winning = won?
-      board[winning.first]
+    if won = won?
+      board[won.first]
     end
   end
 
