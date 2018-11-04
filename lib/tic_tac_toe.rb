@@ -1,6 +1,6 @@
 class TicTacToe
-  attr_accessor :board
 
+  attr_accessor :board
   WIN_COMBINATIONS = [
     [0,1,2],
     [3,4,5],
@@ -9,10 +9,10 @@ class TicTacToe
     [1,4,7],
     [2,5,8],
     [0,4,8],
-    [6,4,2]
+    [2,4,6],
   ]
 
-  def initialize(board = nil)
+  def initialize(board=nil)
     @board = board || Array.new(9, " ")
   end
 
@@ -24,8 +24,8 @@ class TicTacToe
     puts " #{@board[6]} | #{@board[7]} | #{@board[8]} "
   end
 
-  def input_to_index(user_input)
-    user_input.to_i - 1
+  def input_to_index(input)
+    input = input.to_i - 1
   end
 
   def move(index, value)
@@ -40,47 +40,41 @@ class TicTacToe
     !position_taken?(index) && index.between?(0,8)
   end
 
+  def turn_count
+    board.count {|turn| turn.include?("X") || turn.include?("O")}
+  end
+
   def turn
-    puts "Please enter 1-9:"
+    puts "Please enter 1-9"
     input = gets.strip
     index = input_to_index(input)
-    if valid_move?(index)
-      move(index, current_player)
-    else
+    if !valid_move?(index)
       turn
+    else
+      move(index, current_player)
     end
-  display_board
+    display_board
   end
 
   def current_player
-    turn_count % 2 == 0 ? "X" : "O"
-  end
-
-  def turn_count
-    board.count{|token| token == "X" || token == "O"}
+    turn_count.even? ? "X" : "O"
   end
 
   def won?
-    WIN_COMBINATIONS.detect do |combo|
-      board[combo[0]] == board[combo[1]] &&
-        board[combo[1]] == board[combo[2]] &&
-        position_taken?(combo[0])
+    WIN_COMBINATIONS.each do |combo|
+      if combo.all? {|play| board[play] == "X"} || combo.all? {|play| board[play] == "O"}
+        return combo
+      end
     end
+    false
   end
 
   def full?
-    if board.include? (" ")
-      return false
-    else
-      return true
-    end
+    !board.include?(" ") ? true : false
   end
 
   def draw?
-    if !won? && full?
-      return true
-    elsif won?
-      return false
+    full? && !won?
   end
 
   def over?
@@ -93,15 +87,21 @@ class TicTacToe
     end
   end
 
+  # def play
+  #   turn while !over?
+  #   puts "Congratulations #{winner}!" if won?
+  #   puts "Cat's Game!" if draw?
+  # end
+
   def play
-    while !over?
-      turn
-    end
-    if won?
-      puts "Congratulations #{winner}!"
-    elsif draw?
-      puts "Cat's Game!"
-    end
+  while !over?
+    turn
+  end
+  if won?
+    puts "Congratulations #{winner}!"
+  elsif draw?
+    puts "Cat's Game!"
   end
 end
+
 end
