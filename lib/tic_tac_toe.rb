@@ -60,7 +60,6 @@ class TicTacToe
     board.count{|token| token == "X" || token == "O"}
   end
 
-
   def won?
     WIN_COMBINATIONS.detect do |combo|
       board[combo[0]] == board[combo[1]] &&
