@@ -3,11 +3,6 @@ require 'pry'
 require_relative '../lib/tic_tac_toe.rb'
 
 puts "Welcome to Tic Tac Toe!"
-puts "Please Enter 1-9:"
-
-board = [" ", " ", " ", " ", " ", " ", " ", " ", " "]
-
-display_board(board)
-turn(board)
-play(board)
-input= gets.strip
+game = TicTacToe.new
+game.display_board
+game.play
